@@ -7,7 +7,7 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
  * @title The PriceConsumerV3 contract
  * @notice Acontract that returns latest price from Chainlink Price Feeds
  */
-contract PriceFeedConsumer {
+abstract contract PriceFeedConsumer {
     AggregatorV3Interface internal immutable priceFeed;
 
     constructor(address _priceFeed) {
@@ -26,11 +26,10 @@ contract PriceFeedConsumer {
             int256 price,
             ,
             ,
-
         ) = /* uint256 startedAt */
-            /* uint256 timeStamp */
-            /* uint80 answeredInRound */
-            priceFeed.latestRoundData();
+        /* uint256 timeStamp */
+        /* uint80 answeredInRound */
+         priceFeed.latestRoundData();
         return price;
     }
 

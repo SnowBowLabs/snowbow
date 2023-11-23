@@ -8,6 +8,8 @@ importers:
 
   .: {}
 
+  packages/client: {}
+
   packages/contracts:
     devDependencies:
       prettier:
