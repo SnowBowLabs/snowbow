@@ -8,8 +8,7 @@ interface IPriceObserver {
         NorInOrOut,
         InAndOut,
         OnlyOut,
-        InButIncrease,
-        InButDecrease
+        OnlyIn
     }
 
     // get the product status
