@@ -12,7 +12,7 @@ interface IPriceObserver {
     }
 
     // get the product status
-    // return product status, valid period, end price(if apply)
+    // return product status, valid period length, end price of target assets(if apply)
     function getProductResult(address productAddr)
         external
         view
