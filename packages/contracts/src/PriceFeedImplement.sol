@@ -7,6 +7,18 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV2V3Interface.sol";
 contract PriceFeedImplement {
 
     mapping(string => address) private dataFeedAddresses;
+
+    mapping(address => TokenInfo) private tokenInfos;
+
+    struct TokenInfo {
+        uint256 targetInitPrice;
+        uint256 targetKnockInPrice;
+        uint256 targetKnockOutPrice;
+        uint256 startTime;
+        uint256 period;
+        uint256 baseProfit;
+        address usdToken;
+    }
     /**
     * @notice Constructor that initializes the contract with Chainlink data feed addresses.
     */
@@ -40,5 +52,47 @@ contract PriceFeedImplement {
         AggregatorV2V3Interface dataFeed = AggregatorV2V3Interface(dataFeedAddress);
         (, int price, , , ) = dataFeed.latestRoundData();
         return price;
+    }
+
+    /**
+    * @dev Stores information for a specific token.
+    * @param targetToken The address of the target token.
+    * @param targetInitPrice Initial price of the target token.
+    * @param targetKnockInPrice Price at which the knock-in event happens.
+    * @param targetKnockOutPrice Price at which the knock-out event happens.
+    * @param startTime Start time of the contract.
+    * @param period Duration for which the contract is valid.
+    * @param baseProfit Base profit associated with the contract.
+    * @param usdToken Address of the USD token used for conversion.
+    */
+    function storeTokenInfo(
+        address targetToken,
+        uint256 targetInitPrice,
+        uint256 targetKnockInPrice,
+        uint256 targetKnockOutPrice,
+        uint256 startTime,
+        uint256 period,
+        uint256 baseProfit,
+        address usdToken
+    ) public {
+        tokenInfos[targetToken] = TokenInfo(
+            targetInitPrice,
+            targetKnockInPrice,
+            targetKnockOutPrice,
+            startTime,
+            period,
+            baseProfit,
+            usdToken
+        );
+    }
+
+    /**
+    * @dev Retrieves stored information for a specific token.
+    * @param targetToken The address of the token to query information for.
+    * @return Token information including prices, time, and profit parameters.
+    */
+    function getTokenInfo(address targetToken) public view returns (TokenInfo memory) {
+        require(tokenInfos[targetToken].startTime != 0, "Token info not found");
+        return tokenInfos[targetToken];
     }
 }
