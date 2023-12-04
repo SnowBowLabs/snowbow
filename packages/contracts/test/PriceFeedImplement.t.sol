@@ -10,7 +10,7 @@ contract PriceFeedImplementTest is Test {
     PriceFeedImplement priceFeed;
 
     function setUp() public {
-        priceFeed = new PriceFeedImplement();
+        priceFeed = new PriceFeedImplement(15);
         // 初始化任何必要的状态
     }
 
