@@ -67,8 +67,7 @@ contract PriceObserver is IPriceObserver, AutomationCompatibleInterface {
 
             ProductResult memory ps = productResult[productAddr];
 
-            // 根据价格计算赌局状态
-
+            // judge whether knock in or knock in out now
             if (currentPrice >= product.targetKnockOutPrice) {
                 ps.KnockOut = true;
             } else if (currentPrice <= product.targetKnockInPrice) {
@@ -77,7 +76,7 @@ contract PriceObserver is IPriceObserver, AutomationCompatibleInterface {
                 return;
             }
 
-            // if knock out, end product
+            // if knock out happened, end product
             if (ps.KnockOut) {
                 if (ps.KnockIn) {
                     ps.status = SnowbowResultStatus.InAndOut;
