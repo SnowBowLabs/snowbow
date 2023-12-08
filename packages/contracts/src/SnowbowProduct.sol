@@ -7,9 +7,9 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {ISnowbowProduct} from "src/interfaces/ISnowbowProduct.sol";
 import {BitMaps} from "@openzeppelin/contracts/utils/structs/BitMaps.sol";
-import {IPriceObserver} from "src/interfaces/IPriceObserver.sol";
+import {IPriceObserver, IPriceObserverDef} from "src/interfaces/IPriceObserver.sol";
 
-contract SnowbowProduct is ISnowbowProduct {
+contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
     using SafeERC20 for IERC20;
     using BitMaps for BitMaps.BitMap;
 
@@ -46,29 +46,32 @@ contract SnowbowProduct is ISnowbowProduct {
     /**
      * @dev one contract for one target asset, only support WETH/WBTC
      */
-    constructor(
-        address targetToken,
-        uint256 targetInitPrice,
-        uint256 targetKnockInPrice,
-        uint256 targetKnockOutPrice,
-        uint256 startTime,
-        uint256 period,
-        uint256 baseProfit,
-        address usdToken,
-        address priceObserver
-    ) {
-        _targetToken = targetToken;
-        _targetInitPrice = targetInitPrice;
-        _targetKnockInPrice = targetKnockInPrice;
-        _targetKnockOutPrice = targetKnockOutPrice;
-        _startTime = uint32(startTime);
-        _period = uint32(period);
-        _baseProfit = uint16(baseProfit);
-        _usdToken = usdToken;
+    function initialize(ProductInitArgs calldata args) public override {
+        _targetToken = args.targetToken;
+        _targetInitPrice = args.targetInitPrice;
+        _targetKnockInPrice = args.targetKnockInPrice;
+        _targetKnockOutPrice = args.targetKnockOutPrice;
+        _startTime = uint32(args.startTime);
+        _period = uint32(args.period);
+        _baseProfit = uint16(args.baseProfit);
+        _usdToken = args.usdToken;
 
-        _targetDecimal = IERC20Metadata(targetToken).decimals();
+        _targetDecimal = IERC20Metadata(args.targetToken).decimals();
 
-        _priceObserver = priceObserver;
+        _priceObserver = args.priceObserver;
+
+        // register product
+        IPriceObserver(_priceObserver).registerProduct(
+            ProductInfo(
+                args.targetToken,
+                args.targetInitPrice,
+                args.targetKnockInPrice,
+                args.targetKnockOutPrice,
+                args.startTime,
+                args.period,
+                args.baseProfit
+            )
+        );
     }
 
     /**
@@ -117,18 +120,15 @@ contract SnowbowProduct is ISnowbowProduct {
             _boughtAmount[msg.sender] * _targetInitPrice * (10000 + _baseProfit) / PROFIT_BASE * 10 ** _targetDecimal;
 
         // judge the condition and give corspoding reward
-        if (status == IPriceObserver.SnowbowResultStatus.NorInOrOut) {
+        if (status == SnowbowResultStatus.NorInOrOut) {
             // if not knock in nor knock out
             // reward all reward
             IERC20(_usdToken).safeTransfer(msg.sender, allPeriodRewardUSDAmount);
-        } else if (
-            status == IPriceObserver.SnowbowResultStatus.InAndOut
-                || status == IPriceObserver.SnowbowResultStatus.OnlyOut
-        ) {
+        } else if (status == SnowbowResultStatus.InAndOut || status == SnowbowResultStatus.OnlyOut) {
             // if knock in and knock out, or only knock out
             // reward the valid period part of reward
             IERC20(_usdToken).safeTransfer(msg.sender, allPeriodRewardUSDAmount * validPeriod / _period);
-        } else if (status == IPriceObserver.SnowbowResultStatus.OnlyIn) {
+        } else if (status == SnowbowResultStatus.OnlyIn) {
             // if knock in but no knock out
             if (endPrice > _targetInitPrice) {
                 // if end price larger than init price, user get a part earning

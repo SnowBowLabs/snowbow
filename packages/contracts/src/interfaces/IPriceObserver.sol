@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.23;
 
-interface IPriceObserver {
+interface IPriceObserverDef {
     enum SnowbowResultStatus {
         Invalid,
         NotEnd,
@@ -28,7 +28,9 @@ interface IPriceObserver {
         uint32 validPeriod;
         uint200 endPrice;
     }
+}
 
+interface IPriceObserver is IPriceObserverDef {
     // get the product status
     // return product status, valid period length, end price of target assets(if apply)
     function getProductResult(address productAddr)

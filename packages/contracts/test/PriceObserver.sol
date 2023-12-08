@@ -5,7 +5,7 @@ import {Test} from "forge-std/Test.sol";
 import "src/PriceObserver.sol";
 import "src/interfaces/IPriceObserver.sol";
 
-contract PriceObserverTest is Test {
+contract PriceObserverTest is Test, IPriceObserverDef {
     PriceObserver priceObserver;
 
     function setUp() public {
@@ -15,7 +15,7 @@ contract PriceObserverTest is Test {
 
     function testRegisterProduct() public {
         // 构造ProductInfo
-        IPriceObserver.ProductInfo memory productInfo = IPriceObserver.ProductInfo({
+        IPriceObserver.ProductInfo memory productInfo = ProductInfo({
             targetToken: address(0x007A22900a3B98143368Bd5906f8E17e9867581b),
             targetInitPrice: 100,
             targetKnockInPrice: 150,
@@ -42,7 +42,7 @@ contract PriceObserverTest is Test {
     }
 
     function testTimeBasedLogging() public {
-        IPriceObserver.ProductInfo memory productInfo = IPriceObserver.ProductInfo({
+        IPriceObserver.ProductInfo memory productInfo = ProductInfo({
             targetToken: address(0x007A22900a3B98143368Bd5906f8E17e9867581b),
             targetInitPrice: 100,
             targetKnockInPrice: 150,
