@@ -3,10 +3,10 @@ pragma solidity 0.8.23;
 
 import {Ownable} from "solady/auth/Ownable.sol";
 import "solady/utils/LibClone.sol";
+import {ISnowbowProduct} from "src/interfaces/ISnowbowProduct.sol";
+import {IStructDef} from "src/interfaces/IStructDef.sol";
 
-import {ISnowbowProduct, ISnowbowProductDef} from "src/interfaces/ISnowbowProduct.sol";
-
-contract SnowbowFactory is Ownable, ISnowbowProductDef {
+contract SnowbowFactory is Ownable, IStructDef {
     event ProductCreate(address);
 
     address internal _impl;

@@ -5,7 +5,9 @@ import {Test} from "forge-std/Test.sol";
 import "src/PriceObserver.sol";
 import "src/interfaces/IPriceObserver.sol";
 
-contract PriceObserverTest is Test, IPriceObserverDef {
+import {IStructDef} from "src/interfaces/IStructDef.sol";
+
+contract PriceObserverTest is Test, IStructDef {
     PriceObserver priceObserver;
 
     function setUp() public {

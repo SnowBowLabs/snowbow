@@ -1,36 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.23;
 
-interface IPriceObserverDef {
-    enum SnowbowResultStatus {
-        Invalid,
-        NotEnd,
-        NorInOrOut,
-        InAndOut,
-        OnlyOut,
-        OnlyIn
-    }
+import {IStructDef} from "./IStructDef.sol";
 
-    struct ProductInfo {
-        address targetToken;
-        uint256 targetInitPrice;
-        uint256 targetKnockInPrice;
-        uint256 targetKnockOutPrice;
-        uint256 startTime;
-        uint256 period;
-        uint256 baseProfit;
-    }
+interface IPriceObserverDef {}
 
-    struct ProductResult {
-        SnowbowResultStatus status;
-        bool KnockIn;
-        bool KnockOut;
-        uint32 validPeriod;
-        uint200 endPrice;
-    }
-}
-
-interface IPriceObserver is IPriceObserverDef {
+interface IPriceObserver is IStructDef {
     // get the product status
     // return product status, valid period length, end price of target assets(if apply)
     function getProductResult(address productAddr)
