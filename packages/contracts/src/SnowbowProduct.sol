@@ -5,11 +5,11 @@ import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/Ag
 import {IERC20Metadata} from "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {ISnowbowSeller} from "src/interfaces/ISnowbowSeller.sol";
+import {ISnowbowProduct} from "src/interfaces/ISnowbowProduct.sol";
 import {BitMaps} from "@openzeppelin/contracts/utils/structs/BitMaps.sol";
 import {IPriceObserver} from "src/interfaces/IPriceObserver.sol";
 
-contract SnowbowSeller is ISnowbowSeller {
+contract SnowbowProduct is ISnowbowProduct {
     using SafeERC20 for IERC20;
     using BitMaps for BitMaps.BitMap;
 
