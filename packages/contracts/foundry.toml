@@ -5,8 +5,14 @@ libs = ['lib']
 gas_reports = ["*"]
 optimizer = true
 optimizer_runs = 20000
-fs_permissions = [{ access = "read", path = "lib/foundry-chainlink-toolkit/out"}]
+bytecodeHash = 'none'
+fs_permissions = [
+    { access = "read", path = "lib/foundry-chainlink-toolkit/out" },
+]
 revert_strings = "debug"
 # Remappings in remappings.txt
+
+[profile.mumbai]
+eth_rpc_url = "https://polygon-mumbai-bor.publicnode.com"
 
 # See more config options https://github.com/gakonst/foundry/tree/master/config

@@ -52,7 +52,8 @@ contract PriceObserver is IPriceObserver, AutomationCompatibleInterface {
 
     function performUpkeep(bytes calldata /* performData */ ) external override {
         if ((block.timestamp - lastTimeStamp) > interval) {
-            lastTimeStamp = block.timestamp;
+            // set timestamp
+            lastTimeStamp = block.timestamp - block.timestamp % interval;
             _fetchProductPrice();
         }
     }
