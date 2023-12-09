@@ -12,7 +12,7 @@ interface IStructDef {
     }
 
     struct ProductInfo {
-        address targetToken;
+        address targetTokenFeeData;
         uint256 targetInitPrice;
         uint256 targetKnockInPrice;
         uint256 targetKnockOutPrice;
@@ -31,6 +31,7 @@ interface IStructDef {
 
     struct ProductInitArgs {
         address targetToken;
+        address targetTokenFeeData;
         uint256 targetInitPrice;
         uint256 targetKnockInPrice;
         uint256 targetKnockOutPrice;

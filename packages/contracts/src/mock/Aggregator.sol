@@ -8,6 +8,8 @@ interface IAggregatorMock {
         external
         view
         returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);
+
+    function decimals() external view returns (uint8);
 }
 
 contract AggregatorMock is IAggregatorMock {
@@ -20,6 +22,10 @@ contract AggregatorMock is IAggregatorMock {
         returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
     {
         answer = _answer;
+    }
+
+    function decimals() external view returns (uint8) {
+        return 8;
     }
 
     function setAnswer(uint256 answer) public {

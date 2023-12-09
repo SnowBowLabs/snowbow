@@ -62,7 +62,7 @@ contract PriceObserver is IPriceObserver, AutomationCompatibleInterface {
         for (uint256 i = 0; i < monitorProductList.length; i++) {
             address productAddr = monitorProductList[i];
             ProductInfo memory product = productInfos[productAddr];
-            AggregatorV2V3Interface dataFeed = AggregatorV2V3Interface(product.targetToken);
+            AggregatorV2V3Interface dataFeed = AggregatorV2V3Interface(product.targetTokenFeeData);
             (, int256 currentPriceInt,,,) = dataFeed.latestRoundData();
             uint256 currentPrice = uint256(currentPriceInt);
 

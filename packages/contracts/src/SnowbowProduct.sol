@@ -20,8 +20,9 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
 
     // target token address
     address internal _targetToken;
+    address internal _targetTokenFeeData;
     uint8 _targetDecimal;
-    // target token price, in per usd
+    // target token price, in per usd, decimal equal the price feed
     uint256 internal _targetInitPrice;
     uint256 internal _targetKnockInPrice;
     uint256 internal _targetKnockOutPrice;
@@ -46,6 +47,7 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
      */
     function initialize(ProductInitArgs calldata args) public override {
         _targetToken = args.targetToken;
+        _targetTokenFeeData = args.targetTokenFeeData;
         _targetInitPrice = args.targetInitPrice;
         _targetKnockInPrice = args.targetKnockInPrice;
         _targetKnockOutPrice = args.targetKnockOutPrice;
@@ -62,7 +64,7 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
         // register product
         IPriceObserver(_priceObserver).registerProduct(
             ProductInfo(
-                args.targetToken,
+                args.targetTokenFeeData,
                 args.targetInitPrice,
                 args.targetKnockInPrice,
                 args.targetKnockOutPrice,
@@ -87,8 +89,12 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
 
         // calculate how much dest can be bought
         // and handle decimail at the same time
-        uint256 dstAmount = getLatestPrice(_usdFeeData) * amount * 10 ** _targetDecimal
-            / (_targetInitPrice * 10 ** IERC20Metadata(_usdToken).decimals());
+        uint256 dstAmount = getLatestPrice(_usdFeeData) * amount
+            * 10 ** AggregatorV3Interface(_targetTokenFeeData).decimals() * 10 ** _targetDecimal
+            / (
+                _targetInitPrice * 10 ** AggregatorV3Interface(_usdFeeData).decimals()
+                    * 10 ** IERC20Metadata(_usdToken).decimals()
+            );
 
         _boughtAmount[msg.sender] += dstAmount;
         totalBoughtAmount += dstAmount;

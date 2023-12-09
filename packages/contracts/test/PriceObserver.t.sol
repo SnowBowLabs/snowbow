@@ -18,7 +18,7 @@ contract PriceObserverTest is Test, IStructDef {
     function testRegisterProduct() public {
         // 构造ProductInfo
         IPriceObserver.ProductInfo memory productInfo = ProductInfo({
-            targetToken: address(0x007A22900a3B98143368Bd5906f8E17e9867581b),
+            targetTokenFeeData: address(0x007A22900a3B98143368Bd5906f8E17e9867581b),
             targetInitPrice: 100,
             targetKnockInPrice: 150,
             targetKnockOutPrice: 200,
@@ -45,7 +45,7 @@ contract PriceObserverTest is Test, IStructDef {
 
     function testTimeBasedLogging() public {
         IPriceObserver.ProductInfo memory productInfo = ProductInfo({
-            targetToken: address(0x007A22900a3B98143368Bd5906f8E17e9867581b),
+            targetTokenFeeData: address(0x007A22900a3B98143368Bd5906f8E17e9867581b),
             targetInitPrice: 100,
             targetKnockInPrice: 150,
             targetKnockOutPrice: 200,

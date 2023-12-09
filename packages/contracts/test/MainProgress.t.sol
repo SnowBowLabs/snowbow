@@ -21,9 +21,10 @@ contract MainProgressTest is BaseTest, IStructDef, ISnowbowProductDef {
             _factory.createProduct(
                 ProductInitArgs(
                     _wbtc,
-                    100 ether,
-                    80 ether,
-                    120 ether,
+                    address(_wbtcFeeData),
+                    100 * 10e8,
+                    80 * 10e8,
+                    120 * 10e8,
                     1 days,
                     30 days,
                     1000,
@@ -33,9 +34,10 @@ contract MainProgressTest is BaseTest, IStructDef, ISnowbowProductDef {
                 )
             )
         );
-        // set up
-        _usdFeeData.setAnswer(1 ether);
-        _wbtcFeeData.setAnswer(100 ether);
+        // set up price oracle
+        // since decimal is 8
+        _usdFeeData.setAnswer(1 * 10e8);
+        _wbtcFeeData.setAnswer(100 * 10e8);
     }
 
     function testBuyShare() public {
