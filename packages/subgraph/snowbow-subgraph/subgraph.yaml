@@ -1,0 +1,33 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: SnowbowFactory
+    network: mumbai
+    source:
+      address: "0xbD5a8C111E60867D07D73fcDEd680689D401E2D7"
+      abi: SnowbowFactory
+      startBlock: 43372547
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - OwnershipHandoverCanceled
+        - OwnershipHandoverRequested
+        - OwnershipTransferred
+        - ProductCreate
+      abis:
+        - name: SnowbowFactory
+          file: ./abis/SnowbowFactory.json
+      eventHandlers:
+        - event: OwnershipHandoverCanceled(indexed address)
+          handler: handleOwnershipHandoverCanceled
+        - event: OwnershipHandoverRequested(indexed address)
+          handler: handleOwnershipHandoverRequested
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: ProductCreate(address)
+          handler: handleProductCreate
+      file: ./src/snowbow-factory.ts
