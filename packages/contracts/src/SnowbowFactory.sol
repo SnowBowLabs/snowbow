@@ -15,12 +15,14 @@ contract SnowbowFactory is Ownable, IStructDef {
         _initializeOwner(owner_);
     }
 
-    function createProduct(ProductInitArgs calldata args) public {
+    function createProduct(ProductInitArgs calldata args) public returns (address) {
         // clone and initialize
         address product = LibClone.clone(_impl);
         ISnowbowProduct(product).initialize(args);
 
         emit ProductCreate(product);
+
+        return product;
     }
 
     function setImplementation(address impl) public onlyOwner {

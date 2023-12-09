@@ -8,6 +8,8 @@ interface ISnowbowProductDef {
     error SnowbowStarted();
     error SnowbowNotEnded();
     error Claimed();
+
+    event BuyShare(address indexed user, uint256 usdAmount, uint256 targetAmount);
 }
 
 interface ISnowbowProduct is ISnowbowProductDef, IStructDef {

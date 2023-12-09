@@ -18,9 +18,6 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
     // feeData address on polygon mumbai
     // https://docs.chain.link/data-feeds/price-feeds/addresses?network=polygon&page=1#mumbai-testnet
 
-    // address => feeData address
-    mapping(address => address) internal _supportInvestToken;
-
     // target token address
     address internal _targetToken;
     uint8 _targetDecimal;
@@ -30,6 +27,7 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
     uint256 internal _targetKnockOutPrice;
 
     address internal _usdToken;
+    address internal _usdFeeData;
     mapping(address => uint256) internal _boughtAmount;
 
     uint32 internal _startTime;
@@ -55,6 +53,7 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
         _period = uint32(args.period);
         _baseProfit = uint16(args.baseProfit);
         _usdToken = args.usdToken;
+        _usdFeeData = args.usdFeeData;
 
         _targetDecimal = IERC20Metadata(args.targetToken).decimals();
 
@@ -76,28 +75,25 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
 
     /**
      * @dev user buy some share on the snowbow
-     * @dev only support buy with ETH/USDC/USDT/DAI
+     * @param amount amount of usd token you want to pay
      */
-
-    function buyShare(address putToToken, uint256 amount) public returns (uint256) {
+    function buyShare(uint256 amount) public returns (uint256) {
         if (block.timestamp >= _startTime) {
             revert SnowbowStarted();
         }
 
-        if (_supportInvestToken[putToToken] == address(0)) {
-            revert InvalidTokenParams();
-        }
-
-        // transfer token
-        IERC20(putToToken).safeTransferFrom(msg.sender, address(this), amount);
+        // transfer usd token
+        IERC20(_usdToken).safeTransferFrom(msg.sender, address(this), amount);
 
         // calculate how much dest can be bought
         // and handle decimail at the same time
-        uint256 dstAmount = getLatestPrice(_supportInvestToken[putToToken]) * amount * 10 ** _targetDecimal
-            / _targetInitPrice * IERC20Metadata(putToToken).decimals();
+        uint256 dstAmount = getLatestPrice(_usdFeeData) * amount * 10 ** _targetDecimal
+            / (_targetInitPrice * 10 ** IERC20Metadata(_usdToken).decimals());
 
         _boughtAmount[msg.sender] += dstAmount;
         totalBoughtAmount += dstAmount;
+
+        emit BuyShare(msg.sender, amount, dstAmount);
 
         return dstAmount;
     }

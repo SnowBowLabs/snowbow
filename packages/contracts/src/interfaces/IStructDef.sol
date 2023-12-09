@@ -38,6 +38,7 @@ interface IStructDef {
         uint256 period;
         uint256 baseProfit;
         address usdToken;
+        address usdFeeData;
         address priceObserver;
     }
 }
