@@ -5,6 +5,10 @@ type Product @entity(immutable: true) {
   targetToken: Bytes!
   startTime: BigInt!
   period: BigInt!
+  strikePrice: BigDecimal!
+  knockInPrice: BigDecimal!
+  knockOutPrice: BigDecimal!
+  yieldRate: BigDecimal!
 
   distribution: [UserProduct!]! @derivedFrom(field: "product")
 }
@@ -18,6 +22,7 @@ type User @entity {
 type UserProduct @entity {
   # user-product
   id: String!
-  user: User
-  product: Product
+  user: User!
+  product: Product!
+  holdingTargetAmount: BigDecimal!
 }

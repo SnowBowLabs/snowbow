@@ -18,6 +18,8 @@ dataSources:
       abis:
         - name: SnowbowFactory
           file: ./abis/SnowbowFactory.json
+        - name: SnowbowProduct
+          file: ./abis/SnowbowProduct.json
       eventHandlers:
         - event: ProductCreate(address)
           handler: handleProductCreate
@@ -34,10 +36,14 @@ templates:
       language: wasm/assemblyscript
       file: ./src/snowbow-product.ts
       entities:
-        - Exchange
+        - Product
+        - User
+        - UserProduct
       abis:
         - name: SnowbowProduct
           file: ./abis/SnowbowProduct.json
+        - name: SnowbowFactory
+          file: ./abis/SnowbowFactory.json
       eventHandlers:
         - event: BuyShare(indexed address,uint256,uint256)
           handler: handleBuyShare
