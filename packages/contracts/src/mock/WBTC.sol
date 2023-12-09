@@ -12,4 +12,8 @@ contract WBTC is ERC20 {
     function symbol() public pure override returns (string memory) {
         return "WBTC";
     }
+
+    function mint(address user, uint256 amount) public {
+        _mint(user, amount);
+    }
 }
