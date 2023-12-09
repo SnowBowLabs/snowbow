@@ -14,20 +14,30 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - OwnershipHandoverCanceled
-        - OwnershipHandoverRequested
-        - OwnershipTransferred
         - ProductCreate
       abis:
         - name: SnowbowFactory
           file: ./abis/SnowbowFactory.json
       eventHandlers:
-        - event: OwnershipHandoverCanceled(indexed address)
-          handler: handleOwnershipHandoverCanceled
-        - event: OwnershipHandoverRequested(indexed address)
-          handler: handleOwnershipHandoverRequested
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
         - event: ProductCreate(address)
           handler: handleProductCreate
       file: ./src/snowbow-factory.ts
+templates:
+  - name: SnowbowProduct
+    kind: ethereum/contract
+    network: mumbai
+    source:
+      abi: SnowbowProduct
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/snowbow-product.ts
+      entities:
+        - Exchange
+      abis:
+        - name: SnowbowProduct
+          file: ./abis/SnowbowProduct.json
+      eventHandlers:
+        - event: BuyShare(indexed address,uint256,uint256)
+          handler: handleBuyShare

@@ -1,0 +1,200 @@
+[
+    {
+        "type": "function",
+        "name": "buyShare",
+        "inputs": [
+            {
+                "name": "amount",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "claimReward",
+        "inputs": [],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
+        "name": "getLatestPrice",
+        "inputs": [
+            {
+                "name": "priceFeed",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "initialize",
+        "inputs": [
+            {
+                "name": "args",
+                "type": "tuple",
+                "internalType": "struct IStructDef.ProductInitArgs",
+                "components": [
+                    {
+                        "name": "targetToken",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "targetTokenFeeData",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "targetInitPrice",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "targetKnockInPrice",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "targetKnockOutPrice",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "startTime",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "period",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "baseProfit",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "usdToken",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "usdFeeData",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "priceObserver",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ]
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "event",
+        "name": "BuyShare",
+        "inputs": [
+            {
+                "name": "user",
+                "type": "address",
+                "indexed": true,
+                "internalType": "address"
+            },
+            {
+                "name": "usdAmount",
+                "type": "uint256",
+                "indexed": false,
+                "internalType": "uint256"
+            },
+            {
+                "name": "targetAmount",
+                "type": "uint256",
+                "indexed": false,
+                "internalType": "uint256"
+            }
+        ],
+        "anonymous": false
+    },
+    {
+        "type": "error",
+        "name": "AddressEmptyCode",
+        "inputs": [
+            {
+                "name": "target",
+                "type": "address",
+                "internalType": "address"
+            }
+        ]
+    },
+    {
+        "type": "error",
+        "name": "AddressInsufficientBalance",
+        "inputs": [
+            {
+                "name": "account",
+                "type": "address",
+                "internalType": "address"
+            }
+        ]
+    },
+    {
+        "type": "error",
+        "name": "Claimed",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "FailedInnerCall",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "InvalidTokenParams",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "SafeERC20FailedOperation",
+        "inputs": [
+            {
+                "name": "token",
+                "type": "address",
+                "internalType": "address"
+            }
+        ]
+    },
+    {
+        "type": "error",
+        "name": "SnowbowNotEnded",
+        "inputs": []
+    },
+    {
+        "type": "error",
+        "name": "SnowbowStarted",
+        "inputs": []
+    }
+]
