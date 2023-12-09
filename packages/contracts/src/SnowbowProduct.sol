@@ -19,28 +19,28 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
     // https://docs.chain.link/data-feeds/price-feeds/addresses?network=polygon&page=1#mumbai-testnet
 
     // target token address
-    address internal _targetToken;
-    address internal _targetTokenFeeData;
-    uint8 _targetDecimal;
+    address public _targetToken;
+    address public _targetTokenFeeData;
+    uint8 public _targetDecimal;
     // target token price, in per usd, decimal equal the price feed
-    uint256 internal _targetInitPrice;
-    uint256 internal _targetKnockInPrice;
-    uint256 internal _targetKnockOutPrice;
+    uint256 public _targetInitPrice;
+    uint256 public _targetKnockInPrice;
+    uint256 public _targetKnockOutPrice;
 
-    address internal _usdToken;
-    address internal _usdFeeData;
-    mapping(address => uint256) internal _boughtAmount;
+    address public _usdToken;
+    address public _usdFeeData;
+    mapping(address => uint256) public _boughtAmount;
 
-    uint32 internal _startTime;
-    uint32 internal _period;
-    uint16 internal _baseProfit; // decimal is 4
+    uint32 public _startTime;
+    uint32 public _period;
+    uint16 public _baseProfit; // decimal is 4
 
-    uint256 totalBoughtAmount;
+    uint256 public totalBoughtAmount;
 
     // wether the user had claimed the reward
     BitMaps.BitMap internal _claimed;
 
-    address internal _priceObserver;
+    address public _priceObserver;
 
     /**
      * @dev one contract for one target asset, only support WETH/WBTC
@@ -118,8 +118,9 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
         (IPriceObserver.SnowbowResultStatus status, uint256 validPeriod, uint256 endPrice) =
             IPriceObserver(_priceObserver).getProductResult(address(this));
 
-        uint256 allPeriodRewardUSDAmount =
-            _boughtAmount[msg.sender] * _targetInitPrice * (10000 + _baseProfit) / PROFIT_BASE * 10 ** _targetDecimal;
+        uint256 initUSDAmount = _boughtAmount[msg.sender] * _targetInitPrice * IERC20Metadata(_usdToken).decimals()
+            / AggregatorV3Interface(_targetTokenFeeData).decimals();
+        uint256 allPeriodRewardUSDAmount = initUSDAmount * (PROFIT_BASE + _baseProfit) / PROFIT_BASE;
 
         // judge the condition and give corspoding reward
         if (status == SnowbowResultStatus.NorInOrOut) {
@@ -133,19 +134,14 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
         } else if (status == SnowbowResultStatus.OnlyIn) {
             // if knock in but no knock out
             if (endPrice > _targetInitPrice) {
-                // if end price larger than init price, user get a part earning
-                IERC20(_usdToken).safeTransfer(
-                    msg.sender,
-                    allPeriodRewardUSDAmount * (_targetKnockOutPrice - endPrice) / _period
-                        * (_targetKnockOutPrice - _targetKnockInPrice)
-                );
+                // if end price larger than init price, user get invest amount back
+                IERC20(_usdToken).safeTransfer(msg.sender, initUSDAmount);
             } else {
                 // if end price smaller than init price, user get part loss
                 IERC20(_usdToken).safeTransfer(
                     msg.sender,
-                    allPeriodRewardUSDAmount
-                        - allPeriodRewardUSDAmount * (endPrice - _targetKnockInPrice) / _period
-                            * (_targetKnockOutPrice - _targetKnockInPrice)
+                    initUSDAmount
+                        - initUSDAmount * (endPrice - _targetKnockInPrice) / (_targetKnockOutPrice - _targetKnockInPrice)
                 );
             }
         }
