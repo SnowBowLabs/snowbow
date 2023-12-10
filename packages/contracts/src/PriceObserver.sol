@@ -100,6 +100,8 @@ contract PriceObserver is IPriceObserver, AutomationCompatibleInterface {
                     ps.endPrice = uint200(currentPrice);
                     ps.validPeriod = uint32(block.timestamp - product.startTime);
                 }
+
+                _endProduct(productAddr);
             }
 
             // if time is up, end product
@@ -109,6 +111,8 @@ contract PriceObserver is IPriceObserver, AutomationCompatibleInterface {
                 } else {
                     ps.status = SnowbowResultStatus.NorInOrOut;
                 }
+
+                _endProduct(productAddr);
             }
 
             emit ProductStatusChange(productAddr, ps.status);
@@ -123,14 +127,17 @@ contract PriceObserver is IPriceObserver, AutomationCompatibleInterface {
      */
     function _endProduct(address productAddr) internal {
         uint256 productIndex = productIndexes[productAddr];
+        address lastProduct = monitorProductList[monitorProductList.length - 1];
 
         // swap current product with last one and pop
-        monitorProductList[productIndex] = monitorProductList[monitorProductList.length];
-        monitorProductList.pop();
+        monitorProductList[productIndex] = lastProduct;
 
         // disable the product index
         productIndexes[productAddr] = type(uint256).max;
+
         // set the right index to swaped product
-        productIndexes[monitorProductList[productIndex]] = productIndex;
+        productIndexes[lastProduct] = productIndex;
+
+        monitorProductList.pop();
     }
 }
