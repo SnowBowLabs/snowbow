@@ -8,6 +8,7 @@ import {SnowbowFactory} from "src/SnowbowFactory.sol";
 import {PriceObserver} from "src/PriceObserver.sol";
 import {USD} from "src/mock/USD.sol";
 import {WBTC} from "src/mock/WBTC.sol";
+import {AggregatorMock} from "src/mock/Aggregator.sol";
 import "src/interfaces/IStructDef.sol";
 
 contract Deploy is Script, IStructDef {
@@ -32,6 +33,29 @@ contract Deploy is Script, IStructDef {
         console2.log("factory: ", address(factory), "\n  snowbow impl: ", address(snowbowImpl));
         console2.log("usd:", address(usd));
         console2.log("wbtc: ", address(wbtc));
+    }
+
+    function deployMockPriceFeed() public {
+        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+
+        vm.startBroadcast(deployerPrivateKey);
+        // for mock, observe every 5 minutes
+        AggregatorMock ag = new AggregatorMock();
+
+        console2.log("aggregator: ", address(ag));
+
+        vm.stopBroadcast();
+    }
+
+    function setAnswer() public {
+        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+
+        vm.startBroadcast(deployerPrivateKey);
+        AggregatorMock ag = AggregatorMock(0xe44a0B926f6CC5a56af17468F66D84DA0dE413bb);
+
+        ag.setAnswer(4400000000000);
+
+        vm.stopBroadcast();
     }
 
     function deployObserver() public {
@@ -73,16 +97,16 @@ contract Deploy is Script, IStructDef {
         address product = factory.createProduct(
             ProductInitArgs(
                 0x3d56dC8D257Db1085fD4f47F7fCCeCE279FB330b,
-                0x007A22900a3B98143368Bd5906f8E17e9867581b,
+                0xe44a0B926f6CC5a56af17468F66D84DA0dE413bb,
                 4400000000000,
                 4000000000000,
                 4800000000000,
-                1702224000,
-                86400,
+                1702202400,
+                900,
                 1000,
                 0x42EFBA52668d124e8c7427aA7cb2c4Fe7212109A,
                 0x572dDec9087154dC5dfBB1546Bb62713147e0Ab0,
-                0x9C8c4c4ec9346f941724aeb341c587891E336e1d
+                0x74Aa66Ce57E8d6Cea12C71ff146bA9837DddCb8b
             )
         );
 
@@ -98,7 +122,7 @@ contract Deploy is Script, IStructDef {
         address owner = vm.addr(deployerPrivateKey);
         vm.startBroadcast(deployerPrivateKey);
 
-        SnowbowProduct product = SnowbowProduct(0xa0967fb211Bf26DBc0b6F7793F2dd3989db72fAb);
+        SnowbowProduct product = SnowbowProduct(0x96d7eA9C888f620D3706161441deD64bB5cdd775);
         USD usd = USD(0x42EFBA52668d124e8c7427aA7cb2c4Fe7212109A);
 
         usd.approve(address(product), UINT256_MAX);
