@@ -47,8 +47,42 @@ contract MainProgressTest is BaseTest, IStructDef, ISnowbowProductDef {
         IERC20(_usd).approve(address(_product), UINT256_MAX);
 
         vm.expectEmit(true, true, true, true);
-        emit BuyShare(_user, 1000, 10);
+        emit BuyShare(_user, 1000 ether, 10 ether);
 
-        _product.buyShare(1000);
+        _product.buyShare(1000 ether);
+        vm.stopPrank();
+    }
+
+    function testKnockInAndOut() public {
+        deal(_usd, _user, UINT256_MAX);
+
+        vm.startPrank(_user);
+        IERC20(_usd).approve(address(_product), UINT256_MAX);
+
+        vm.expectEmit(true, true, true, true);
+        emit BuyShare(_user, 1000 ether, 10 ether);
+
+        _product.buyShare(1000 ether);
+        vm.stopPrank();
+
+        skip(1 days);
+
+        // set price
+        _wbtcFeeData.setAnswer(80 * 10e8);
+
+        skip(1 days);
+        _observer.performUpkeep(new bytes(0));
+
+        // set price
+        _wbtcFeeData.setAnswer(130 * 10e8);
+
+        skip(1 days);
+        _observer.performUpkeep(new bytes(0));
+
+        // give product enough token
+        deal(address(_usd), address(_product), UINT256_MAX);
+
+        vm.prank(_user);
+        _product.claimReward();
     }
 }

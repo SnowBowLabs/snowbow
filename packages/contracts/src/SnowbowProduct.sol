@@ -105,10 +105,6 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
     }
 
     function claimReward() public returns (uint256 reward) {
-        if (block.timestamp < _startTime + _period) {
-            revert SnowbowNotEnded();
-        }
-
         if (_claimed.get(uint160(msg.sender))) {
             revert Claimed();
         }
@@ -118,20 +114,26 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
         (IPriceObserver.SnowbowResultStatus status, uint256 validPeriod, uint256 endPrice) =
             IPriceObserver(_priceObserver).getProductResult(address(this));
 
-        uint256 initUSDAmount = _boughtAmount[msg.sender] * _targetInitPrice * IERC20Metadata(_usdToken).decimals()
-            / AggregatorV3Interface(_targetTokenFeeData).decimals();
-        uint256 allPeriodRewardUSDAmount = initUSDAmount * (PROFIT_BASE + _baseProfit) / PROFIT_BASE;
+        if (status == SnowbowResultStatus.NotEnd) {
+            revert SnowbowNotEnded();
+        }
+
+        uint256 initUSDAmount = _boughtAmount[msg.sender] * _targetInitPrice
+            * 10 ** IERC20Metadata(_usdToken).decimals()
+            / (10 ** AggregatorV3Interface(_targetTokenFeeData).decimals() * 10 ** IERC20Metadata(_targetToken).decimals());
+
+        uint256 allPeriodProfitUSDAmount = initUSDAmount * (PROFIT_BASE + _baseProfit) / PROFIT_BASE;
 
         // judge the condition and give corspoding reward
         if (status == SnowbowResultStatus.NorInOrOut) {
             // if not knock in nor knock out
             // reward all reward
-            reward = allPeriodRewardUSDAmount;
+            reward = initUSDAmount + allPeriodProfitUSDAmount;
             IERC20(_usdToken).safeTransfer(msg.sender, reward);
         } else if (status == SnowbowResultStatus.InAndOut || status == SnowbowResultStatus.OnlyOut) {
             // if knock in and knock out, or only knock out
             // reward the valid period part of reward
-            reward = allPeriodRewardUSDAmount * validPeriod / _period;
+            reward = initUSDAmount + allPeriodProfitUSDAmount * validPeriod / _period;
             IERC20(_usdToken).safeTransfer(msg.sender, reward);
         } else if (status == SnowbowResultStatus.OnlyIn) {
             // if knock in but no knock out

@@ -116,7 +116,7 @@ contract Deploy is Script, IStructDef {
                 4400000000000,
                 4000000000000,
                 4800000000000,
-                1702204500,
+                1702209600,
                 900,
                 1000,
                 0x42EFBA52668d124e8c7427aA7cb2c4Fe7212109A,
@@ -137,7 +137,7 @@ contract Deploy is Script, IStructDef {
         address owner = vm.addr(deployerPrivateKey);
         vm.startBroadcast(deployerPrivateKey);
 
-        SnowbowProduct product = SnowbowProduct(0xAeFA121EDB7F8a454d39602dE9Af51E9DC737695);
+        SnowbowProduct product = SnowbowProduct(0xADE65B9A96Eca24a7db4a642B3FDCBFC96C324dC);
         USD usd = USD(0x42EFBA52668d124e8c7427aA7cb2c4Fe7212109A);
 
         usd.approve(address(product), UINT256_MAX);
