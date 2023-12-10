@@ -85,22 +85,6 @@ contract Deploy is Script, IStructDef {
         console2.log("factory: ", address(factory), "\n  snowbow impl: ", address(snowbowImpl));
     }
 
-    function upgradeProduct() public {
-        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
-
-        address owner = vm.addr(deployerPrivateKey);
-        vm.startBroadcast(deployerPrivateKey);
-
-        SnowbowProduct snowbowImpl = new SnowbowProduct();
-        SnowbowFactory factory = SnowbowFactory(0xbD5a8C111E60867D07D73fcDEd680689D401E2D7);
-
-        factory.setImplementation(address(snowbowImpl));
-
-        vm.stopBroadcast();
-
-        console2.log("factory: ", address(factory), "\n new snowbow impl: ", address(snowbowImpl));
-    }
-
     function createWBTCProduct() public {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
 
@@ -116,12 +100,12 @@ contract Deploy is Script, IStructDef {
                 4400000000000,
                 4000000000000,
                 4800000000000,
-                1702209600,
+                1702212600,
                 900,
                 1000,
                 0x42EFBA52668d124e8c7427aA7cb2c4Fe7212109A,
                 0x572dDec9087154dC5dfBB1546Bb62713147e0Ab0,
-                0x74Aa66Ce57E8d6Cea12C71ff146bA9837DddCb8b
+                0xbD2F7657535c2896A930F778e8f5468394522312
             )
         );
 
@@ -134,10 +118,9 @@ contract Deploy is Script, IStructDef {
     function buyWBTCShare() public {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
 
-        address owner = vm.addr(deployerPrivateKey);
         vm.startBroadcast(deployerPrivateKey);
 
-        SnowbowProduct product = SnowbowProduct(0xADE65B9A96Eca24a7db4a642B3FDCBFC96C324dC);
+        SnowbowProduct product = SnowbowProduct(0x69a12c6aAdaf8589900417174a8E5F6F2Ebc0138);
         USD usd = USD(0x42EFBA52668d124e8c7427aA7cb2c4Fe7212109A);
 
         usd.approve(address(product), UINT256_MAX);

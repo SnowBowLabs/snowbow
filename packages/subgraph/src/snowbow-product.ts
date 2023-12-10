@@ -5,9 +5,9 @@ import {
 } from "../generated/templates/SnowbowProduct/SnowbowProduct";
 import { Product, User, UserProduct } from "../generated/schema";
 
-const ETHER_DECIMAL = BigDecimal.fromString("1000000000000000000");
-const PRICE_DECIMAL_BIG_DECIMAL = BigDecimal.fromString("100000000");
-const YIELD_RATE_DECIMAL_BIG_DECIMAL = BigDecimal.fromString("10000");
+export const ETHER_DECIMAL = BigDecimal.fromString("1000000000000000000");
+export const PRICE_DECIMAL_BIG_DECIMAL = BigDecimal.fromString("100000000");
+export const YIELD_RATE_DECIMAL_BIG_DECIMAL = BigDecimal.fromString("10000");
 
 export function handleBuyShare(event: BuyShare): void {
   const user = fetchUser(event.params.user);
@@ -58,6 +58,12 @@ export function fetchProduct(prodAddr: Address): Product {
     product.yieldRate = new BigDecimal(
       BigInt.fromI32(contract._baseProfit())
     ).div(YIELD_RATE_DECIMAL_BIG_DECIMAL);
+
+    product.knockIn = false;
+    product.knockOut = false;
+    product.result = "Invalid";
+    product.latestPrice = BigDecimal.zero();
+    product.latestPriceTimestamp = BigInt.zero();
   }
 
   product.save();

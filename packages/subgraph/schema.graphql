@@ -1,4 +1,13 @@
-type Product @entity(immutable: true) {
+enum SnowbowResultStatus {
+  Invalid
+  NotEnd
+  NorInOrOut
+  InAndOut
+  OnlyOut
+  OnlyIn
+}
+
+type Product @entity {
   # address
   id: Bytes!
   address: Bytes! # address
@@ -9,6 +18,11 @@ type Product @entity(immutable: true) {
   knockInPrice: BigDecimal!
   knockOutPrice: BigDecimal!
   yieldRate: BigDecimal!
+  knockIn: Boolean!
+  knockOut: Boolean!
+  result: SnowbowResultStatus!
+  latestPrice: BigDecimal!
+  latestPriceTimestamp: BigInt!
 
   distribution: [UserProduct!]! @derivedFrom(field: "product")
 }

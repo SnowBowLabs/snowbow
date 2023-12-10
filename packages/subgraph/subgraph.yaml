@@ -8,7 +8,7 @@ dataSources:
     source:
       address: "0xbD5a8C111E60867D07D73fcDEd680689D401E2D7"
       abi: SnowbowFactory
-      startBlock: 43378421
+      startBlock: 43405891
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -24,6 +24,36 @@ dataSources:
         - event: ProductCreate(address)
           handler: handleProductCreate
       file: ./src/snowbow-factory.ts
+  - kind: ethereum
+    name: PriceObserver
+    network: mumbai
+    source:
+      address: "0xbD2F7657535c2896A930F778e8f5468394522312"
+      abi: PriceObserver
+      startBlock: 43405891
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - ProductCreate
+      abis:
+        - name: SnowbowFactory
+          file: ./abis/SnowbowFactory.json
+        - name: SnowbowProduct
+          file: ./abis/SnowbowProduct.json
+        - name: PriceObserver
+          file: ./abis/PriceObserver.json
+      eventHandlers:
+        - event: KnockIn(indexed address,uint256)
+          handler: handleKnockIn
+        - event: KnockOut(indexed address,uint256)
+          handler: handleKnockOut
+        - event: PriceCheck(indexed address,uint256)
+          handler: handlePriceCheck
+        - event: ProductStatusChange(indexed address,uint8)
+          handler: handleProductStatus
+      file: ./src/price-observer.ts
 templates:
   - name: SnowbowProduct
     kind: ethereum/contract
