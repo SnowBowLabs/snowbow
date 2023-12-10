@@ -53,7 +53,7 @@ contract Deploy is Script, IStructDef {
         vm.startBroadcast(deployerPrivateKey);
         AggregatorMock ag = AggregatorMock(0xe44a0B926f6CC5a56af17468F66D84DA0dE413bb);
 
-        ag.setAnswer(4400000000000);
+        ag.setAnswer(4900000000000);
 
         vm.stopBroadcast();
     }
@@ -68,6 +68,21 @@ contract Deploy is Script, IStructDef {
         console2.log("observer: ", address(observer));
 
         vm.stopBroadcast();
+    }
+
+    function deployProductImpl() public {
+        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+
+        vm.startBroadcast(deployerPrivateKey);
+
+        SnowbowProduct snowbowImpl = new SnowbowProduct();
+        SnowbowFactory factory = SnowbowFactory(0xbD5a8C111E60867D07D73fcDEd680689D401E2D7);
+
+        factory.setImplementation(address(snowbowImpl));
+
+        vm.stopBroadcast();
+
+        console2.log("factory: ", address(factory), "\n  snowbow impl: ", address(snowbowImpl));
     }
 
     function upgradeProduct() public {
@@ -101,7 +116,7 @@ contract Deploy is Script, IStructDef {
                 4400000000000,
                 4000000000000,
                 4800000000000,
-                1702202400,
+                1702204500,
                 900,
                 1000,
                 0x42EFBA52668d124e8c7427aA7cb2c4Fe7212109A,
@@ -122,7 +137,7 @@ contract Deploy is Script, IStructDef {
         address owner = vm.addr(deployerPrivateKey);
         vm.startBroadcast(deployerPrivateKey);
 
-        SnowbowProduct product = SnowbowProduct(0x96d7eA9C888f620D3706161441deD64bB5cdd775);
+        SnowbowProduct product = SnowbowProduct(0xAeFA121EDB7F8a454d39602dE9Af51E9DC737695);
         USD usd = USD(0x42EFBA52668d124e8c7427aA7cb2c4Fe7212109A);
 
         usd.approve(address(product), UINT256_MAX);

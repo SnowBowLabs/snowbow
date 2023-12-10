@@ -104,7 +104,7 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
         return dstAmount;
     }
 
-    function claimReward() public {
+    function claimReward() public returns (uint256 reward) {
         if (block.timestamp < _startTime + _period) {
             revert SnowbowNotEnded();
         }
@@ -126,23 +126,25 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
         if (status == SnowbowResultStatus.NorInOrOut) {
             // if not knock in nor knock out
             // reward all reward
-            IERC20(_usdToken).safeTransfer(msg.sender, allPeriodRewardUSDAmount);
+            reward = allPeriodRewardUSDAmount;
+            IERC20(_usdToken).safeTransfer(msg.sender, reward);
         } else if (status == SnowbowResultStatus.InAndOut || status == SnowbowResultStatus.OnlyOut) {
             // if knock in and knock out, or only knock out
             // reward the valid period part of reward
-            IERC20(_usdToken).safeTransfer(msg.sender, allPeriodRewardUSDAmount * validPeriod / _period);
+            reward = allPeriodRewardUSDAmount * validPeriod / _period;
+            IERC20(_usdToken).safeTransfer(msg.sender, reward);
         } else if (status == SnowbowResultStatus.OnlyIn) {
             // if knock in but no knock out
             if (endPrice > _targetInitPrice) {
                 // if end price larger than init price, user get invest amount back
-                IERC20(_usdToken).safeTransfer(msg.sender, initUSDAmount);
+                reward = initUSDAmount;
+                IERC20(_usdToken).safeTransfer(msg.sender, reward);
             } else {
+                reward = initUSDAmount
+                    - initUSDAmount * (endPrice - _targetKnockInPrice) / (_targetKnockOutPrice - _targetKnockInPrice);
+
                 // if end price smaller than init price, user get part loss
-                IERC20(_usdToken).safeTransfer(
-                    msg.sender,
-                    initUSDAmount
-                        - initUSDAmount * (endPrice - _targetKnockInPrice) / (_targetKnockOutPrice - _targetKnockInPrice)
-                );
+                IERC20(_usdToken).safeTransfer(msg.sender, reward);
             }
         }
     }
