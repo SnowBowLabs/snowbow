@@ -39,6 +39,8 @@ contract PriceObserver is IPriceObserver, AutomationCompatibleInterface {
 
         productIndexes[productAddr] = monitorProductList.length;
         monitorProductList.push(productAddr);
+
+        emit ProductStatusChange(productAddr, SnowbowResultStatus.NotEnd);
     }
 
     function checkUpkeep(bytes calldata /* checkData */ )
@@ -62,17 +64,27 @@ contract PriceObserver is IPriceObserver, AutomationCompatibleInterface {
         for (uint256 i = 0; i < monitorProductList.length; i++) {
             address productAddr = monitorProductList[i];
             ProductInfo memory product = productInfos[productAddr];
+
+            // product not start yet, check next one
+            if (product.startTime > block.timestamp) {
+                continue;
+            }
+
             AggregatorV2V3Interface dataFeed = AggregatorV2V3Interface(product.targetTokenFeeData);
             (, int256 currentPriceInt,,,) = dataFeed.latestRoundData();
             uint256 currentPrice = uint256(currentPriceInt);
+
+            emit PriceCheck(productAddr, currentPrice);
 
             ProductResult memory ps = productResult[productAddr];
 
             // judge whether knock in or knock in out now
             if (currentPrice >= product.targetKnockOutPrice) {
                 ps.KnockOut = true;
+                emit KnockOut(productAddr, currentPrice);
             } else if (currentPrice <= product.targetKnockInPrice) {
                 ps.KnockIn = true;
+                emit KnockIn(productAddr, currentPrice);
             } else {
                 return;
             }
@@ -98,6 +110,8 @@ contract PriceObserver is IPriceObserver, AutomationCompatibleInterface {
                     ps.status = SnowbowResultStatus.NorInOrOut;
                 }
             }
+
+            emit ProductStatusChange(productAddr, ps.status);
 
             productResult[productAddr] = ps;
         }

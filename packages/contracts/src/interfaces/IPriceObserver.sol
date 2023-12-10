@@ -3,9 +3,14 @@ pragma solidity 0.8.23;
 
 import {IStructDef} from "./IStructDef.sol";
 
-interface IPriceObserverDef {}
+interface IPriceObserverDef is IStructDef {
+    event PriceCheck(address indexed product, currentPrice);
+    event KnockIn(address indexed product, uint256 triggerPrice);
+    event KnockOut(address indexed product, uint256 triggerPrice);
+    event ProductStatusChange(address indexed product, SnowbowResultStatus currentStatus);
+}
 
-interface IPriceObserver is IStructDef {
+interface IPriceObserver is IPriceObserverDef {
     // get the product status
     // return product status, valid period length, end price of target assets(if apply)
     function getProductResult(address productAddr)
