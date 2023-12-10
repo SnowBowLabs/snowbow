@@ -10,6 +10,11 @@ import { Web3Button } from "@thirdweb-dev/react";
 import {
     SNOWBOW_PRODUCT_ABI
 } from '../const/abi';
+interface PortfolioItem {
+    id: string;
+    holdingTargetAmount: string;
+    // other fields...
+}
 
 const PortfolioPage = () => {
     const address = useAddress();
@@ -39,7 +44,7 @@ const PortfolioPage = () => {
     };
 
 
-    const [btcPrice, setBtcPrice] = useState(null);
+    const [btcPrice, setBtcPrice] = useState<number | null>(null);
 
     useEffect(() => {
         const fetchBtcPrice = async () => {
@@ -73,7 +78,8 @@ const PortfolioPage = () => {
                 <Heading fontSize={"4xl"} paddingBottom={"20px"}>Portfolio</Heading>
                 <Heading fontSize="2xl">Investment Summary</Heading>
                 <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={5}>
-                    {data.user.portfolio.map((item) => {
+                    {data.user.portfolio.map((item: PortfolioItem) => {
+
                         // Part 3: BTC Price Status
                         let priceStatus, priceColor, priceIndicator;
                         if (btcPrice !== null) {
@@ -87,7 +93,7 @@ const PortfolioPage = () => {
                                 priceIndicator = "decrease";
                             } else {
                                 priceStatus = "At Price";
-                                priceColor = useColorModeValue("gray.600", "whiteAlpha.900");
+                                priceColor = "balck";
                                 priceIndicator = null;
                             }
                         } else {
@@ -137,7 +143,7 @@ const PortfolioPage = () => {
                                         <StatLabel fontWeight="bold" fontSize={'medium'}>BTC Price Status</StatLabel>
                                         <StatNumber>{btcPrice ? `${btcPrice.toFixed(2)} USDT` : 'Fetching...'}</StatNumber>
                                         <StatHelpText fontSize={'medium'}>
-                                            {priceIndicator && <StatArrow type={priceIndicator} />}
+                                            {priceIndicator}
                                             {priceStatus}
                                         </StatHelpText>
                                     </Stat>
