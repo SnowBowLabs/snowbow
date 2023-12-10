@@ -43,20 +43,8 @@ Payoff Scenarios:
 User position is N and 𝛿₀ N value of BTC bought initially. 
 At time t, BTC position is 〖𝑝𝑜𝑠〗ₜ, BTC price is 𝑆ₜ, transaction threshold is thresh, last Tx BTC price is 𝑆ₗₐₛₜ, and let 〖𝐴𝑏𝑠𝑅𝑒𝑡〗ₜ=|(𝑆ₜ−𝑆ₗₐₛₜ)/𝑆ₗₐₛₜ |
 When 〖𝐴𝑏𝑠𝑅𝑒𝑡〗ₜ≥thresh,
-```
-Signal_t = 
-    Buy, if AbsRet >= thresh and AbsRet < 0
-    Sell, if AbsRet >= thresh and AbsRet > 0
 
-BuySellNum_t = 
-    [min(cash_t, pos_0*S_0 - pos_t*S_t) / S_t], if Signal_t = Buy
-    [max(-pos_t, (pos_0*S_0 - pos_t*S_t) / S_t)], if Signal_t = Sell
-
-pos_{t+1} = pos_t + BuySellNum_t
-cash_{t+1} = cash_t - BuySellNum_t * S_t
-S_last = S_t
-```
-
+![](resources/hedge_strategy.png)
 
 
 # Technical
