@@ -53,7 +53,7 @@ contract Deploy is Script, IStructDef {
         vm.startBroadcast(deployerPrivateKey);
         AggregatorMock ag = AggregatorMock(0xe44a0B926f6CC5a56af17468F66D84DA0dE413bb);
 
-        ag.setAnswer(4900000000000);
+        ag.setAnswer(3900000000000);
 
         vm.stopBroadcast();
     }
@@ -100,7 +100,7 @@ contract Deploy is Script, IStructDef {
                 4400000000000,
                 4000000000000,
                 4800000000000,
-                1702212600,
+                1702225800,
                 900,
                 1000,
                 0x42EFBA52668d124e8c7427aA7cb2c4Fe7212109A,
@@ -120,7 +120,7 @@ contract Deploy is Script, IStructDef {
 
         vm.startBroadcast(deployerPrivateKey);
 
-        SnowbowProduct product = SnowbowProduct(0x69a12c6aAdaf8589900417174a8E5F6F2Ebc0138);
+        SnowbowProduct product = SnowbowProduct(0xEFc5102aD2e5F763020A0A808261E27B8B257B89);
         USD usd = USD(0x42EFBA52668d124e8c7427aA7cb2c4Fe7212109A);
 
         usd.approve(address(product), UINT256_MAX);
