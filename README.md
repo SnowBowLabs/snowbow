@@ -21,10 +21,11 @@ While snowball products have been introduced in the crypto space by CEXs like OK
 
 # Product Brief
 
-Take bullish snowball as example.
+Take bullish snowball as an example.
 
-| Underlying Assets              | BTC              |
+| Params              |                |
 |-------------------------------|-----------|
+| Underlying Assets | BTC |
 | Term                                   | 28 Days        |
 | Knock-out (KO) Price        | Initial Price x 103% |
 | Knock-in (KI) Price           | Initial Price x 75%  |
@@ -37,7 +38,7 @@ Payoff Scenarios:
 - KI and the price expires at or below the strike price: Earnings in BTC = Principal / Strike price
 
 # Hedging Strategy
-User position is N and 𝛿₀ N value of BTC bought
+User position is N and 𝛿₀ N value of BTC bought initially. 
 At time t, BTC position is 〖𝑝𝑜𝑠〗ₜ, BTC price is 𝑆ₜ, transaction threshold is thresh, last Tx BTC price is 𝑆ₗₐₛₜ, and let 〖𝐴𝑏𝑠𝑅𝑒𝑡〗ₜ=|(𝑆ₜ−𝑆ₗₐₛₜ)/𝑆ₗₐₛₜ |
 When 〖𝐴𝑏𝑠𝑅𝑒𝑡〗ₜ≥thresh,
 ```
