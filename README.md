@@ -40,7 +40,8 @@ Payoff Scenarios:
 User position is N and 𝛿₀ N value of BTC bought
 At time t, BTC position is 〖𝑝𝑜𝑠〗ₜ, BTC price is 𝑆ₜ, transaction threshold is thresh, last Tx BTC price is 𝑆ₗₐₛₜ, and let 〖𝐴𝑏𝑠𝑅𝑒𝑡〗ₜ=|(𝑆ₜ−𝑆ₗₐₛₜ)/𝑆ₗₐₛₜ |
 When 〖𝐴𝑏𝑠𝑅𝑒𝑡〗ₜ≥thresh,
-\[ \text{Signal}_t =
+
+\text{Signal}_t =
 \begin{cases}
 \text{Buy}, & \text{if AbsRet} \geq \text{thresh and AbsRet} < 0, \\
 \text{Sell}, & \text{if AbsRet} \geq \text{thresh and AbsRet} > 0.
@@ -58,6 +59,6 @@ When 〖𝐴𝑏𝑠𝑅𝑒𝑡〗ₜ≥thresh,
 
 \[ \text{cash}_{t+1} = \text{cash}_t - \text{BuySellNum}_t \times S_t \]
 
-\[ S_{\text{last}} = S_t \]
+\[ S_{\text{last}} = S_t 
 
 
