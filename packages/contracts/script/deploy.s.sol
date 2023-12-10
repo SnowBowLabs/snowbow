@@ -19,8 +19,6 @@ contract Deploy is Script, IStructDef {
 
         SnowbowProduct snowbowImpl = new SnowbowProduct();
         SnowbowFactory factory = new SnowbowFactory(owner);
-        // for mock, observe every 5 minutes
-        PriceObserver observer = new PriceObserver(300, 1701993600);
 
         factory.setImplementation(address(snowbowImpl));
 
@@ -29,10 +27,23 @@ contract Deploy is Script, IStructDef {
 
         vm.stopBroadcast();
 
+        deployObserver();
+
         console2.log("factory: ", address(factory), "\n  snowbow impl: ", address(snowbowImpl));
-        console2.log("observer: ", address(observer));
         console2.log("usd:", address(usd));
         console2.log("wbtc: ", address(wbtc));
+    }
+
+    function deployObserver() public {
+        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+
+        vm.startBroadcast(deployerPrivateKey);
+        // for mock, observe every 5 minutes
+        PriceObserver observer = new PriceObserver(300, 1701993600);
+
+        console2.log("observer: ", address(observer));
+
+        vm.stopBroadcast();
     }
 
     function upgradeProduct() public {
@@ -54,7 +65,6 @@ contract Deploy is Script, IStructDef {
     function createWBTCProduct() public {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
 
-        address owner = vm.addr(deployerPrivateKey);
         vm.startBroadcast(deployerPrivateKey);
 
         SnowbowFactory factory = SnowbowFactory(0xbD5a8C111E60867D07D73fcDEd680689D401E2D7);
