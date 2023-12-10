@@ -1,28 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.23;
 
-interface IPriceObserver {
-    enum SnowbowResultStatus {
-        Invalid,
-        NotEnd,
-        NorInOrOut,
-        InAndOut,
-        OnlyOut,
-        OnlyIn
-    }
-    
-    struct ProductInfo {
-        uint256 targetInitPrice;
-        uint256 targetKnockInPrice;
-        uint256 targetKnockOutPrice;
-        uint256 startTime;
-        uint256 period;
-        uint256 baseProfit;
-        address usdToken;
-    }
+import {IStructDef} from "./IStructDef.sol";
 
-    
+interface IPriceObserverDef is IStructDef {
+    event PriceCheck(address indexed product, uint256 currentPrice);
+    event KnockIn(address indexed product, uint256 triggerPrice);
+    event KnockOut(address indexed product, uint256 triggerPrice);
+    event ProductStatusChange(address indexed product, SnowbowResultStatus currentStatus);
+}
 
+interface IPriceObserver is IPriceObserverDef {
     // get the product status
     // return product status, valid period length, end price of target assets(if apply)
     function getProductResult(address productAddr)
@@ -30,12 +18,9 @@ interface IPriceObserver {
         view
         returns (SnowbowResultStatus, uint256 period, uint256 endPrice);
 
-
     /**
-    * @dev Registers a new product with the given product information.
-    * @param productInfo The information about the product to be registered.
-    * @param productAddr The product address
-    */
-    function registerProduct(address productAddr,ProductInfo calldata productInfo) external;
-    
+     * @dev Registers a new product with the given product information.
+     * @param productInfo The information about the product to be registered.
+     */
+    function registerProduct(ProductInfo calldata productInfo) external;
 }

@@ -182,7 +182,9 @@ function App() {
                                     <Card>
                                         <CardBody>
                                             <Image src={"/images/bear1.png"} />
-                                            <Text fontWeight={"bold"}>you will receive your earnings on the KO date:
+
+                                            <Text fontWeight={"bold"}>you will receive your earnings on the KO date
+
 
                                             </Text>
                                             <Text>Earnings = Principal x (1 + APR x Term / 365)
@@ -214,7 +216,9 @@ function App() {
                                     <Card>
                                         <CardBody>
                                             <Image src={"/images/bear2.png"} />
+
                                             <Text fontWeight={"bold"}>you will receive your earnings on the expiration date:
+
 
 
 
@@ -252,7 +256,10 @@ function App() {
                                     <Card>
                                         <CardBody>
                                             <Image src={"/images/bear3.png"} />
+
                                             <Text fontWeight={"bold"}>you will receive your principal on the expiration date:
+
+
 
 
 
@@ -284,7 +291,9 @@ function App() {
                                     <Card>
                                         <CardBody>
                                             <Image src={"/images/bear4.png"} />
+
                                             <Text fontWeight={"bold"}>you will receive USDT on the expiration date:
+
 
 
 

@@ -1,0 +1,259 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner_",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "AlreadyInitialized",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NewOwnerIsZeroAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoHandoverRequest",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Unauthorized",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "pendingOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipHandoverCanceled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "pendingOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipHandoverRequested",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "oldOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "ProductCreate",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "cancelOwnershipHandover",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "pendingOwner",
+        "type": "address"
+      }
+    ],
+    "name": "completeOwnershipHandover",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "targetToken",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "targetTokenFeeData",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "targetInitPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "targetKnockInPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "targetKnockOutPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "period",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "baseProfit",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "usdToken",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "usdFeeData",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "priceObserver",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IStructDef.ProductInitArgs",
+        "name": "args",
+        "type": "tuple"
+      }
+    ],
+    "name": "createProduct",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "result",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "pendingOwner",
+        "type": "address"
+      }
+    ],
+    "name": "ownershipHandoverExpiresAt",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "result",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "requestOwnershipHandover",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "impl",
+        "type": "address"
+      }
+    ],
+    "name": "setImplementation",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  }
+]

@@ -1,0 +1,42 @@
+enum SnowbowResultStatus {
+  Invalid
+  NotEnd
+  NorInOrOut
+  InAndOut
+  OnlyOut
+  OnlyIn
+}
+
+type Product @entity {
+  # address
+  id: Bytes!
+  address: Bytes! # address
+  targetToken: Bytes!
+  startTime: BigInt!
+  period: BigInt!
+  strikePrice: BigDecimal!
+  knockInPrice: BigDecimal!
+  knockOutPrice: BigDecimal!
+  yieldRate: BigDecimal!
+  knockIn: Boolean!
+  knockOut: Boolean!
+  result: SnowbowResultStatus!
+  latestPrice: BigDecimal!
+  latestPriceTimestamp: BigInt!
+
+  distribution: [UserProduct!]! @derivedFrom(field: "product")
+}
+
+type User @entity {
+  id: Bytes!
+  address: Bytes!
+  portfolio: [UserProduct!]! @derivedFrom(field: "user")
+}
+
+type UserProduct @entity {
+  # user-product
+  id: String!
+  user: User!
+  product: Product!
+  holdingTargetAmount: BigDecimal!
+}
