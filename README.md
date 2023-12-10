@@ -41,7 +41,7 @@ User position is N and 𝛿₀ N value of BTC bought
 At time t, BTC position is 〖𝑝𝑜𝑠〗ₜ, BTC price is 𝑆ₜ, transaction threshold is thresh, last Tx BTC price is 𝑆ₗₐₛₜ, and let 〖𝐴𝑏𝑠𝑅𝑒𝑡〗ₜ=|(𝑆ₜ−𝑆ₗₐₛₜ)/𝑆ₗₐₛₜ |
 When 〖𝐴𝑏𝑠𝑅𝑒𝑡〗ₜ≥thresh,
 
-[
+
 \begin{align*}
 \text{Signal}_t &=
 \begin{cases}
@@ -57,6 +57,6 @@ When 〖𝐴𝑏𝑠𝑅𝑒𝑡〗ₜ≥thresh,
 \text{cash}{t+1} &= \text{cash}_t - \text{BuySellNum}t \times S_t \
 S{\text{last}} &= S_t
 \end{align*}
-]
+
 
 
