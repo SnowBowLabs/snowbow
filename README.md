@@ -41,14 +41,18 @@ User position is N and 𝛿₀ N value of BTC bought
 At time t, BTC position is 〖𝑝𝑜𝑠〗ₜ, BTC price is 𝑆ₜ, transaction threshold is thresh, last Tx BTC price is 𝑆ₗₐₛₜ, and let 〖𝐴𝑏𝑠𝑅𝑒𝑡〗ₜ=|(𝑆ₜ−𝑆ₗₐₛₜ)/𝑆ₗₐₛₜ |
 When 〖𝐴𝑏𝑠𝑅𝑒𝑡〗ₜ≥thresh,
 
-\begin{align*} \text{Signal}_t &= \begin{cases} \text{Buy}, & \text{if AbsRet} \geq \text{thresh and AbsRet} < 0,
-\text{Signal}_t = \begin{cases} \text{Buy}, &\text{if } \text{AbsRet} \geq \text{thresh and AbsRet} < 0, \\ \text{Sell}, &\text{if } \text{AbsRet} \geq \text{thresh and AbsRet} > 0. \end{cases} \\
-\text{BuySellNum}_t = \begin{cases} \frac{\min (\text{cash}_t,\text{pos}_0S_0 - \text{pos}_tS_t)} {S_t}), &\text{if }\text{Signal}_t = \text{Buy}, \\
-\max (-\text{pos}_t, \frac{\text{pos}_0S_0 - \text{pos}_tS_t}{S_t}), &\text{if }\text{Signal}_t = \text{Sell}. \end{cases} \\
-\text{pos}_{t+1} &= \text{pos}_t + \text{BuySellNum}_t \\
-\text{cash}_{t+1} &= \text{cash}_t - \text{BuySellNum}_t \times S_t \\
-S_{\text{last}} &= S_t
-\begin{align*} 
+Signal_t = 
+    Buy, if AbsRet >= thresh and AbsRet < 0
+    Sell, if AbsRet >= thresh and AbsRet > 0
+
+BuySellNum_t = 
+    [min(cash_t, pos_0*S_0 - pos_t*S_t) / S_t], if Signal_t = Buy
+    [max(-pos_t, (pos_0*S_0 - pos_t*S_t) / S_t)], if Signal_t = Sell
+
+pos_{t+1} = pos_t + BuySellNum_t
+cash_{t+1} = cash_t - BuySellNum_t * S_t
+S_last = S_t
+
 
 
 
