@@ -1,17 +1,19 @@
 
 # Snowbow
 
+aka snowball
+
 Submit for 2023 Chainlink Fall Hackathon
 
 # What is Snowball
 
 Snowball structures are non-principal-protected financial instruments with knock-out clauses. In 2003, the first recorded snowball structure product was issued by BNP Paribas in the United States. Over the years, these products gained popularity due to their attractive features, namely high yields. In recent times, snowball products have made significant headway in the Chinese securities market. As of February 2022, the total outstanding amount of snowball products in China surpassed 20 billion US dollars, predominantly linked to stock indexes.
 
-# Snowball in Crypto
+## Snowball in Crypto
 
 While snowball products have been introduced in the crypto space by CEXs like OKX, there is currently no equivalent DeFi offering. As for data from Defillama, the total value locked (TVL) in DeFi derivatives stands at 1.6 billion US dollars, out of a total DeFi TVL of 54 billion US dollars. A significant market opportunity for on-chain snowball products within the DeFi ecosystem.
 
-# Key Features
+## Key Features
 
 1. **High-yield Structured Product**: DeFi Snowball offers users a high-yield on-chain structured product, allowing them to earn attractive returns on their investments.
 
@@ -19,16 +21,16 @@ While snowball products have been introduced in the crypto space by CEXs like OK
 
 3. **On-chain Automated Hedging**: DeFi Snowball employs on-chain automated hedging to safeguard users' returns and ensure security. This feature provides users with a reliable and secure method to earn profits while minimizing risks.
 
-# Product Brief
+## Product Brief
 
 Take bullish snowball as an example.
 
-| Params              |                |
-|-------------------------------|-----------|
-| Underlying Assets | BTC |
-| Term                                   | 28 Days        |
-| Knock-out (KO) Price        | Initial Price x 103% |
-| Knock-in (KI) Price           | Initial Price x 75%  |
+| Params               |                      |
+| -------------------- | -------------------- |
+| Underlying Assets    | BTC                  |
+| Term                 | 28 Days              |
+| Knock-out (KO) Price | Initial Price x 103% |
+| Knock-in (KI) Price  | Initial Price x 75%  |
 
 Payoff Scenarios:
 
@@ -37,7 +39,7 @@ Payoff Scenarios:
 - KI and the price expires between the strike and KO prices: Earnings = Principal
 - KI and the price expires at or below the strike price: Earnings in BTC = Principal / Strike price
 
-# Hedging Strategy
+## Hedging Strategy
 User position is N and 𝛿₀ N value of BTC bought initially. 
 At time t, BTC position is 〖𝑝𝑜𝑠〗ₜ, BTC price is 𝑆ₜ, transaction threshold is thresh, last Tx BTC price is 𝑆ₗₐₛₜ, and let 〖𝐴𝑏𝑠𝑅𝑒𝑡〗ₜ=|(𝑆ₜ−𝑆ₗₐₛₜ)/𝑆ₗₐₛₜ |
 When 〖𝐴𝑏𝑠𝑅𝑒𝑡〗ₜ≥thresh,
@@ -54,5 +56,29 @@ pos_{t+1} = pos_t + BuySellNum_t
 cash_{t+1} = cash_t - BuySellNum_t * S_t
 S_last = S_t
 ```
+
+
+
+# Technical
+
+Repo Directory:
+
+- [`packages/contracts`](packages/contracts): smart contract
+- [`packages/subgraph`](packages/subgraph): subgraph for indexed event
+- [`packages/client`](packages/client): frontend for user to interact
+
+
+Technical Stack: 
+
+- Solidity, Foundry: Write, test and deploy ethereum smart contract
+- Chainlink Data Stream: Fetch target assets price to confirm the `knock in` or `knock out` of snowball.
+- Chainlink Automation: Ensure the price fetch and hedging strategy.
+- The Graph: Index on chain event and provide data for frontend
+- React, Typescript, ThirdWeb: build the user interface
+
+
+## Workflow for contract
+
+![](resources/contract_flow.png)
 
 
