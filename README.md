@@ -42,21 +42,13 @@ At time t, BTC position is 〖𝑝𝑜𝑠〗ₜ, BTC price is 𝑆ₜ, transact
 When 〖𝐴𝑏𝑠𝑅𝑒𝑡〗ₜ≥thresh,
 
 
-\begin{align*}
-\text{Signal}_t &=
-\begin{cases}
-\text{Buy}, & \text{if AbsRet} \geq \text{thresh and AbsRet} < 0, \
-\text{Sell}, & \text{if AbsRet} \geq \text{thresh and AbsRet} > 0.
-\end{cases} \
-\text{BuySellNum}_t &=
-\begin{cases}
-\min (\text{cash}_t, \frac{\text{pos}_0S_0 - \text{pos}_tS_t}{S_t}), & \text{if Signal}_t == \text{'Buy'}, \
-\max (-\text{pos}_t, \frac{\text{pos}_0S_0 - \text{pos}_tS_t}{S_t}), & \text{if Signal}t == \text{'Sell'}.
-\end{cases} \
-\text{pos}{t+1} &= \text{pos}_t + \text{BuySellNum}t \
-\text{cash}{t+1} &= \text{cash}_t - \text{BuySellNum}t \times S_t \
-S{\text{last}} &= S_t
-\end{align*}
-
+[ \begin{align*} \text{Signal}_t &= \begin{cases} \text{Buy}, &\text{if }\text{AbsRet} \geq \text{thresh and AbsRet} < 0, \\
+\text{Sell}, &\text{if }\text{AbsRet} \geq \text{thresh and AbsRet} > 0. \end{cases} \\
+\text{BuySellNum}_t &= \begin{cases} \min (\text{cash}_t, \frac{\text{pos}_0S_0 - \text{pos}_tS_t}{S_t}), &\text{if }\text{Signal}_t == \text{'Buy'}, \\
+\max (-\text{pos}_t, \frac{\text{pos}_0S_0 - \text{pos}_tS_t}{S_t}), &\text{if }\text{Signal}_t == \text{'Sell'}. \end{cases} \\
+\text{pos}_{t+1} &= \text{pos}_t + \text{BuySellNum}_t \\
+\text{cash}_{t+1} &= \text{cash}_t - \text{BuySellNum}_t \times S_t \\
+S_{\text{last}} &= S_t
+\end{align*} ]
 
 
