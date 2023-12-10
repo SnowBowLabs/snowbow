@@ -9,6 +9,8 @@ import {ISnowbowProduct} from "src/interfaces/ISnowbowProduct.sol";
 import {BitMaps} from "@openzeppelin/contracts/utils/structs/BitMaps.sol";
 import {IPriceObserver, IPriceObserverDef} from "src/interfaces/IPriceObserver.sol";
 
+import "forge-std/console2.sol";
+
 contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
     using SafeERC20 for IERC20;
     using BitMaps for BitMaps.BitMap;
@@ -122,7 +124,7 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
             * 10 ** IERC20Metadata(_usdToken).decimals()
             / (10 ** AggregatorV3Interface(_targetTokenFeeData).decimals() * 10 ** IERC20Metadata(_targetToken).decimals());
 
-        uint256 allPeriodProfitUSDAmount = initUSDAmount * (PROFIT_BASE + _baseProfit) / PROFIT_BASE;
+        uint256 allPeriodProfitUSDAmount = initUSDAmount * _baseProfit / PROFIT_BASE;
 
         // judge the condition and give corspoding reward
         if (status == SnowbowResultStatus.NorInOrOut) {
