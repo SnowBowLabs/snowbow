@@ -8,14 +8,14 @@ import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol
 import {ISnowbowProduct} from "src/interfaces/ISnowbowProduct.sol";
 import {BitMaps} from "@openzeppelin/contracts/utils/structs/BitMaps.sol";
 import {IPriceObserver, IPriceObserverDef} from "src/interfaces/IPriceObserver.sol";
-
-import "forge-std/console2.sol";
+import {IUniswapV2Router01} from "src/interfaces/IUniswapV2Router01.sol";
 
 contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
     using SafeERC20 for IERC20;
     using BitMaps for BitMaps.BitMap;
 
     uint256 constant PROFIT_BASE = 10000;
+    uint256 constant TRADE_SHARD = 10;
 
     // feeData address on polygon mumbai
     // https://docs.chain.link/data-feeds/price-feeds/addresses?network=polygon&page=1#mumbai-testnet
@@ -43,6 +43,9 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
     BitMaps.BitMap internal _claimed;
 
     address public _priceObserver;
+
+    address _uniswapV2Router;
+    address _lpToken;
 
     /**
      * @dev one contract for one target asset, only support WETH/WBTC
@@ -150,6 +153,41 @@ contract SnowbowProduct is ISnowbowProduct, IPriceObserverDef {
                 // if end price smaller than init price, user get part loss
                 IERC20(_usdToken).safeTransfer(msg.sender, reward);
             }
+        }
+    }
+
+    /**
+     * @dev WIP
+     * @dev Use uniswap v2 just for a simple demo
+     * @dev For the sake of convenience, security issues will not be considered for the time being
+     */
+    function hedge() public {
+        uint256 currentPrice = getLatestPrice(_targetTokenFeeData);
+        uint256 initUSDAmount = totalBoughtAmount * _targetInitPrice * 10 ** IERC20Metadata(_usdToken).decimals()
+            / (10 ** AggregatorV3Interface(_targetTokenFeeData).decimals() * 10 ** IERC20Metadata(_targetToken).decimals());
+        uint256 BalanceU = IERC20(_usdToken).balanceOf(address(this));
+        uint256 targetAssetsInU = IERC20(_targetToken).balanceOf(address(this)) * _targetInitPrice
+            * 10 ** IERC20Metadata(_usdToken).decimals()
+            / (10 ** AggregatorV3Interface(_targetTokenFeeData).decimals() * 10 ** IERC20Metadata(_targetToken).decimals());
+
+        address[] memory paths;
+
+        // should sell
+        if (currentPrice > _targetInitPrice) {
+            uint256 sellAmountInTargetToken =
+                ((targetAssetsInU - initUSDAmount * getLatestPrice(_usdFeeData)) / getLatestPrice(_targetTokenFeeData));
+            uint256 expectOut;
+            IUniswapV2Router01(_uniswapV2Router).swapTokensForExactTokens(
+                expectOut, sellAmountInTargetToken, paths, address(this), block.timestamp
+            );
+        } else {
+            // should buy
+
+            uint256 buyAmountInU = initUSDAmount - targetAssetsInU;
+            uint256 expectOut;
+            IUniswapV2Router01(_uniswapV2Router).swapTokensForExactTokens(
+                expectOut, buyAmountInU, paths, address(this), block.timestamp
+            );
         }
     }
 

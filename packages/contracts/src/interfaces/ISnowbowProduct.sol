@@ -14,4 +14,5 @@ interface ISnowbowProductDef {
 
 interface ISnowbowProduct is ISnowbowProductDef, IStructDef {
     function initialize(ProductInitArgs calldata args) external;
+    function hedge() external;
 }
