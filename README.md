@@ -77,6 +77,22 @@ Technical Stack:
 - React, Typescript, ThirdWeb: build the user interface
 
 
+Test Contracts(on polygon mumbai):
+
+snowbow factory: [0xbD5a8C111E60867D07D73fcDEd680689D401E2D7](https://mumbai.polygonscan.com/address/0xbD5a8C111E60867D07D73fcDEd680689D401E2D7)
+
+snowbow implementation: [0x456af779eA33E628732b4c505a309B850894C7A2](https://mumbai.polygonscan.com/address/0x456af779eA33E628732b4c505a309B850894C7A2)
+
+price observer: [0xbD2F7657535c2896A930F778e8f5468394522312](https://mumbai.polygonscan.com/address/0xbD2F7657535c2896A930F778e8f5468394522312)
+
+
+MockAggregator: [0xe44a0b926f6cc5a56af17468f66d84da0de413bb](https://mumbai.polygonscan.com/address/0xe44a0b926f6cc5a56af17468f66d84da0de413bb)
+
+MockWBTC: [0x3d56dC8D257Db1085fD4f47F7fCCeCE279FB330b](https://mumbai.polygonscan.com/address/0x3d56dC8D257Db1085fD4f47F7fCCeCE279FB330b)
+
+MockUSDC: [0x42efba52668d124e8c7427aa7cb2c4fe7212109a](https://mumbai.polygonscan.com/address/0x42efba52668d124e8c7427aa7cb2c4fe7212109a)
+
+
 ## Workflow for contract
 
 ![](resources/contract_flow.png)
